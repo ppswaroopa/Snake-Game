@@ -50,19 +50,27 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   if (!growing && !shrinking) {
     // Remove the tail from the vector.
     body.erase(body.begin());
-    std::cout<<"Snake Size "<<size<<"\n";
+    // std::cout<<"Snake Size "<<size<<"\n";
   } 
   else if (shrinking) {
-    body.erase(body.begin());
-    body.erase(body.begin());
-    size -= 1;
-    shrinking = false;
-    std::cout<<"Snake Size "<<size<<"\n";
+    if (size <= 1)
+    {
+      body.erase(body.begin());
+      shrinking = false;
+    }
+    else
+    {
+      body.erase(body.begin());
+      body.erase(body.begin());
+      size -= 1;
+      shrinking = false;
+      // std::cout<<"Snake Size "<<size<<"\n";
+    }
   }
   else {
     growing = false;
     size++;
-    std::cout<<"Snake Size "<<size<<"\n";
+    // std::cout<<"Snake Size "<<size<<"\n";
   }
 
   // Check if the snake has died.
@@ -96,4 +104,14 @@ bool Snake::SnakeCell(int x, int y) {
     }
   }
   return false;
+}
+
+void Snake::ResetSnake(Snake& obj){
+  alive = true;
+  head_x = grid_height/2;
+  head_y = grid_width/2;
+  while (size > 1){
+    body.erase(body.begin());
+    size -= 1;
+  }
 }

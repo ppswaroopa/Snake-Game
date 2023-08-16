@@ -37,7 +37,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score, frame_count, repeat);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -48,6 +48,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     if (frame_duration < target_frame_duration) {
       SDL_Delay(target_frame_duration - frame_duration);
     }
+
+    std::cout << "Score: " << GetScore()<<"| Size: "<<GetSize()<<"\t\r"<<std::flush;
+    // std::cout << "Size: " << GetSize() <<"\t\r"<<std::flush;
   }
 }
 
@@ -87,7 +90,7 @@ void Game::PlaceFood() {
 }
 
 void Game::Update() {
-  if (!snake.alive) return;
+  if (!snake.alive && (repeat > 3)) return;
 
   snake.Update();
 
@@ -100,18 +103,25 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.02;
+    snake.speed += 0.005; // Lowered speed to allow higher scores.
   }
 
   if (lemon.x == new_x && lemon.y == new_y) {
     PlaceFood();
     // Shrink snake and decrease speed.
     snake.ShrinkBody();
-    snake.speed -= 0.02;
+    snake.speed -= 0.0002;
   }
 
   if (morgue.x == new_x && morgue.y == new_y) {
     snake.alive = false;
+    repeat++;
+    if (repeat <= 3) { 
+      scoreboard.push_back(score);
+      score = 0;
+      snake.ResetSnake(snake);
+      PlaceFood();  
+    }
     return;
   }
   
@@ -119,3 +129,18 @@ void Game::Update() {
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
+
+int Game::HighScore(Game& obj) {
+  int high = 0;
+  for (int i:scoreboard)
+  {
+    if (high > i)
+    {
+      continue;
+    }
+    else {
+      high = i;
+    }
+  }
+  return high;
+}
