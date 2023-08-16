@@ -1,6 +1,7 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
+#include <thread>
 
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
@@ -24,7 +25,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake);
+    std::thread snakeThread(&Controller::HandleInput, controller, std::ref(running), std::ref(snake));
+    // controller.HandleInput(running, snake);
+    snakeThread.join();
     Update();
     renderer.Render(snake, food, lemon, morgue);
 
@@ -116,12 +119,11 @@ void Game::Update() {
   if (morgue.x == new_x && morgue.y == new_y) {
     snake.alive = false;
     repeat++;
-    if (repeat <= 3) { 
-      scoreboard.push_back(score);
-      score = 0;
-      snake.ResetSnake(snake);
-      PlaceFood();  
-    }
+    // Game runs indefinetly until user quits.
+    scoreboard.push_back(score);
+    score = 0;
+    snake.ResetSnake(snake);
+    PlaceFood();
     return;
   }
   

@@ -31,14 +31,18 @@ This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www
 
 I set out to add more features and make the game interesting.
 1. Add <b>Boosts & Penalties</b> to add dynamism.
-2. Add Time based challenges.
-3. Add game music.
-4. Make all game features accessible inside the window.
+2. Play game for longer.
+3. Add Time based challenges.
+4. Add game music.
+5. Make all game features accessible inside the window.
 
-I have successfully implemented the 1st feature. Rest of the features will be implemented later.
+I have successfully implemented the 1st& 2nd feature. Rest of the features will be implemented later.
 
-<!-- ### Boosts and Penalties
-In the game Green blocks are food, they grow the length of the snake and also increase speed of movement. Brown block is the Morgue, which when passed over will kill the snake and the game will end. Yellow blocks give a chance to decrease speed and reduce length while still maintaining the score. As the snake keeps eating the food the speed will be difficult to manage so the player can use this as a way to keep them in the game. I also wanted to make them appear only after certain turns, but it broke my game. Will try again. -->
+### Boosts and Penalties
+In the game Green blocks are food, they grow the length of the snake and also increase speed of movement. Brown block is the Morgue, which when passed over will kill the snake and the game will end. Yellow blocks give a chance to decrease speed slightly and reduce length while still maintaining the score. As the snake keeps eating the food the speed will be difficult to manage so the player can use this as a way to keep them in the game.
+
+### Play game for longer
+Game can now be played for as long as the player wants to and the highest score will be displayed at the end. Player can press 'ESC' key or close the application to quit.
 
 
 ### Expected Behavior
@@ -69,10 +73,11 @@ The game starts and spawns the Snake(Blue), a Food block(Green), a Lemon(Shrinki
 
 3. Memory Management
 
-    To prevent unncesary copying of class objects, on HighScore, ResetSnake object is passed by reference.
+    To prevent unncesary copying of class objects, on HighScore, ResetSnake object is passed by reference to the functions.
 
 4. Concurrency
-    
+
+    HandleInput function is executed on a seperate thread. User inputs are now handled by a seperate thread.
 
 
 ## CC Attribution-ShareAlike 4.0 International
