@@ -1,0 +1,3 @@
+/home/pranava/udacity_cpp/Snake-Game/build/CMakeFiles/rebuild_cache.dir
+/home/pranava/udacity_cpp/Snake-Game/build/CMakeFiles/edit_cache.dir
+/home/pranava/udacity_cpp/Snake-Game/build/CMakeFiles/SnakeGame.dir

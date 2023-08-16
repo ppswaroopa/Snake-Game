@@ -6,6 +6,7 @@
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
+#include <timeChallenge.h>
 
 class Game {
  public:
@@ -18,6 +19,8 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point lemon;
+  SDL_Point morgue;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -28,6 +31,7 @@ class Game {
 
   void PlaceFood();
   void Update();
+  void Timer();
 };
 
 #endif

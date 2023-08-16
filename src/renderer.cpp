@@ -38,7 +38,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, SDL_Point const &lemon, SDL_Point const &morgue) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -48,9 +48,21 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   SDL_RenderClear(sdl_renderer);
 
   // Render food
-  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
+  SDL_SetRenderDrawColor(sdl_renderer, 0x5C, 0xE4, 0x1A, 0xFF);
   block.x = food.x * block.w;
   block.y = food.y * block.h;
+  SDL_RenderFillRect(sdl_renderer, &block);
+
+  // Render Lemon
+  SDL_SetRenderDrawColor(sdl_renderer, 0xFA, 0xFA, 0x33, 0xFF);
+  block.x = lemon.x * block.w;
+  block.y = lemon.y * block.h;
+  SDL_RenderFillRect(sdl_renderer, &block);
+
+  // Render Morgue
+  SDL_SetRenderDrawColor(sdl_renderer, 0xC0, 0x56, 0x20, 0xFF);
+  block.x = morgue.x * block.w;
+  block.y = morgue.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Render snake's body

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "SDL.h"
 
+
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
@@ -25,7 +26,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, lemon, morgue);
 
     frame_end = SDL_GetTicks();
 
@@ -52,14 +53,29 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
 void Game::PlaceFood() {
   int x, y;
+  int x1, y1; // Lemon Placement
+  int x2, y2; // Morgue Placement
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
+    
+    x1 = random_w(engine);
+    y1 = random_h(engine);
+
+    x2 = random_w(engine);
+    y2 = random_h(engine);
+
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y)) {
+    if ((!snake.SnakeCell(x, y)) && (!snake.SnakeCell(x1, y1)) & (!snake.SnakeCell(x2, y2))) {
       food.x = x;
       food.y = y;
+
+      lemon.x = x1;
+      lemon.y = y1;
+
+      morgue.x = x2;
+      morgue.y = y2;
       return;
     }
   }
@@ -81,6 +97,26 @@ void Game::Update() {
     snake.GrowBody();
     snake.speed += 0.02;
   }
+
+  if (lemon.x == new_x && lemon.y == new_y) {
+    // score++;
+    PlaceFood();
+    // Grow snake and increase speed.
+    snake.ShrinkBody();
+    snake.speed -= 0.02;
+  }
+
+  if (morgue.x == new_x && morgue.y == new_y) {
+    // score++;
+    // PlaceFood();
+    // // Grow snake and increase speed.
+    // snake.GrowBody();
+    // snake.speed += 0.02;
+
+    snake.alive = false;
+    return;
+  }
+  
 }
 
 int Game::GetScore() const { return score; }
