@@ -1,12 +1,8 @@
-# CPPND: Capstone Snake Game Example
+# Snake Game
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
 
 <img src="snake_game.gif"/>
-
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
-
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
@@ -30,6 +26,19 @@ In this project, you can build your own C++ application or extend this Snake gam
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
 
+
+## Scope & Implementations
+
+I set out to add more features and make the game interesting.
+1. Add <b>Boosts & Penalties</b> to add dynamism.
+2. Add Time based challenges.
+3. Add game music.
+4. Make all game features accessible inside the window.
+
+I have successfully implemented the 1st feature. Rest of the features will be implemented later.
+
+### Boosts and Penalties
+In the game Green blocks are food, they grow the length of the snake and also increase speed of movement. Brown block is the Morgue, which when passed over will kill the snake and the game will end. Yellow blocks give a chance to decrease speed and reduce length while still maintaining the score. As the snake keeps eating the food the speed will be difficult to manage so the player can use this as a way to keep them in the game. I also wanted to make them appear only after certain turns, but it broke my game. Will try again.
 
 ## CC Attribution-ShareAlike 4.0 International
 

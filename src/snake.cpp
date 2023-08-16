@@ -73,8 +73,16 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   }
 }
 
+/*
+Grow Body sets the value of boolean 'growing' to true.
+This allows the UpdateBody function to add body length.
+*/
 void Snake::GrowBody() { growing = true; }
 
+/*
+Shrink Body sets the value of boolean 'shrinking' to true.
+This allows the UpdateBody function to reduce body length.
+*/
 void Snake::ShrinkBody() { shrinking = true; }
 
 // Inefficient method to check if cell is occupied by snake.

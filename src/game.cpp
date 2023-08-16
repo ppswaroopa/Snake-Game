@@ -51,6 +51,11 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   }
 }
 
+/*
+Place food function will place items on the grid for the players.
+Green is the food to score points, Brown is the morgue which ends the game,
+Yellow is a safe way to shed length and slow down.
+*/
 void Game::PlaceFood() {
   int x, y;
   int x1, y1; // Lemon Placement
@@ -99,20 +104,13 @@ void Game::Update() {
   }
 
   if (lemon.x == new_x && lemon.y == new_y) {
-    // score++;
     PlaceFood();
-    // Grow snake and increase speed.
+    // Shrink snake and decrease speed.
     snake.ShrinkBody();
     snake.speed -= 0.02;
   }
 
   if (morgue.x == new_x && morgue.y == new_y) {
-    // score++;
-    // PlaceFood();
-    // // Grow snake and increase speed.
-    // snake.GrowBody();
-    // snake.speed += 0.02;
-
     snake.alive = false;
     return;
   }

@@ -47,19 +47,19 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, SDL_Point const 
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);
 
-  // Render food
+  // Render food as Green
   SDL_SetRenderDrawColor(sdl_renderer, 0x5C, 0xE4, 0x1A, 0xFF);
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
-  // Render Lemon
+  // Render Lemon as Yellow
   SDL_SetRenderDrawColor(sdl_renderer, 0xFA, 0xFA, 0x33, 0xFF);
   block.x = lemon.x * block.w;
   block.y = lemon.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
-  // Render Morgue
+  // Render Morgue as Brown
   SDL_SetRenderDrawColor(sdl_renderer, 0xC0, 0x56, 0x20, 0xFF);
   block.x = morgue.x * block.w;
   block.y = morgue.y * block.h;
