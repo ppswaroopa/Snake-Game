@@ -6,7 +6,6 @@
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
-#include <timeChallenge.h>
 
 class Game {
  public:
@@ -31,7 +30,6 @@ class Game {
 
   void PlaceFood();
   void Update();
-  void Timer();
 };
 
 #endif

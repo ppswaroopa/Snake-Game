@@ -6,8 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../src/timeChallenge.h
-
 /home/pranava/udacity_cpp/Snake-Game/src/controller.h
 snake.h
 /home/pranava/udacity_cpp/Snake-Game/src/snake.h
@@ -31,8 +29,6 @@ renderer.h
 /home/pranava/udacity_cpp/Snake-Game/src/renderer.h
 snake.h
 /home/pranava/udacity_cpp/Snake-Game/src/snake.h
-timeChallenge.h
--
 
 /home/pranava/udacity_cpp/Snake-Game/src/main.cpp
 iostream
