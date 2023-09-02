@@ -18,6 +18,7 @@ This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www
   * Linux: gcc / g++ is installed by default on most Linux distros
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
+* sudo apt-get install libsdl2-ttf-dev
 
 ## Basic Build Instructions
 

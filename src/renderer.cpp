@@ -91,3 +91,63 @@ void Renderer::UpdateWindowTitle(int score, int fps, int repeat) {
   std::string title{"Game: " + std::to_string(repeat) + " Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
+
+void Renderer::RenderStart() {
+  // Clear screen
+  SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+  SDL_RenderClear(sdl_renderer);
+
+  // Initialize TTF
+  TTF_Init();
+  if (TTF_Init() < 0) {
+    std::cout<<"Error Initializing SDL_ttf: "<< TTF_GetError() <<"\n";
+  }
+
+  // For positioning at the center
+  SDL_Rect textRect;
+  textRect.x = screen_width / 2 - 80;
+  textRect.y = screen_height / 2;
+
+  SDL_Rect quitTextRect;
+  quitTextRect.x = screen_width / 2 - 80;
+  quitTextRect.y = screen_height / 2 + 30;
+
+  TTF_Font* font = TTF_OpenFont("/home/pranava/udacity_cpp/Snake-Game/src/fonts/SummerPixel.ttf",24);
+  if (!font) {
+    std::cout<<"Failed to load font: "<< TTF_GetError() <<"\n";
+  }
+  
+  // Create an SDL_Surface with the text
+  SDL_Color textColor = {255, 255, 255}; // White color
+  SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "Press SPACE to START", textColor);
+  SDL_Surface* quitTextSurface = TTF_RenderText_Solid(font, "Press ESC to Quit", textColor);
+  if ( !startTextSurface or ! quitTextSurface) {
+	  std::cout << "Failed to render text: " << TTF_GetError() << "\n";
+  }
+
+  // Create an SDL_Texture from the surface
+  SDL_Texture* startTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, startTextSurface);
+  SDL_Texture* quitTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, quitTextSurface);
+
+  // get dimensions of the text
+  int textWidth = startTextSurface->w;
+  int textHeight = startTextSurface->h;
+
+  // Set the width and height of the destination rectangle
+  textRect.w = textWidth; // Use the width of the text surface
+  textRect.h = textHeight; // Use the height of the text surface
+  quitTextRect.w = textWidth;
+  quitTextRect.h = textHeight;
+
+  // SDL_Rect dest = { 0, 0, textSurface->w, textSurface->h };
+
+  SDL_RenderCopy( sdl_renderer, startTextTexture , NULL, &textRect);
+  SDL_RenderCopy( sdl_renderer, quitTextTexture , NULL, &quitTextRect);
+
+  // Cleanup the surface and font
+  SDL_FreeSurface(startTextSurface);
+  TTF_CloseFont(font);
+
+  // Update Screen
+  SDL_RenderPresent(sdl_renderer);
+}

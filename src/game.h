@@ -16,6 +16,8 @@ class Game {
   int GetScore() const;
   int GetSize() const;
   int HighScore(Game&);
+  bool GameStart(Controller const &controller, Renderer &renderer, 
+            std::size_t target_frame_duration);
 
  private:
   Snake snake;
