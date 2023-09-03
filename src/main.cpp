@@ -23,7 +23,9 @@ int main() {
     // Run game if selection is to play
     game.Run(controller, renderer, kMsPerFrame);
     std::cout << "Game has terminated successfully!\n";
-    std::cout << "Highest Score: " << game.HighScore(game) <<"\n";
+    std::cout << "Highest Score: " << game.HighScore() <<"\n";
   }
+
+  game.GameEnd(controller, renderer, kMsPerFrame);
   return 0;
 }

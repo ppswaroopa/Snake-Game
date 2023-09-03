@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "snake.h"
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
 class Renderer {
  public:
@@ -15,6 +16,7 @@ class Renderer {
   void Render(Snake const snake, SDL_Point const &food, SDL_Point const &lemon, SDL_Point const &morgue);
   void UpdateWindowTitle(int score, int fps, int repeat);
   void RenderStart();
+  void RenderEnd(int);
 
  private:
   SDL_Window *sdl_window;

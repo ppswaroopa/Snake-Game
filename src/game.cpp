@@ -21,6 +21,19 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   bool running = true;
 
+  Mix_Music* music; // Initialize music and play music
+  
+  music = Mix_LoadMUS("/home/pranava/udacity_cpp/Snake-Game/src/music/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3");
+
+  if (!music) {
+    std::cerr << "Failed to load music.\n";
+    std::cerr << "SDL_Error: " << Mix_GetError() << "\n";
+  }
+  int result = Mix_PlayMusic( music, -1 ); // -1 will play the music indefinetly
+  if ( result != 0 ) {
+    std::cerr << "Failed to play music: " << Mix_GetError() << "\n";
+  }
+
   while (running) {
     frame_start = SDL_GetTicks();
 
@@ -69,11 +82,8 @@ bool Game::GameStart(Controller const &controller, Renderer &renderer,
   while (start == 0) {
     frame_start = SDL_GetTicks();
 
-    // Input, Update, Render - the main game loop.
-    // std::thread snakeThread(&Controller::HandleInputStart, controller, std::ref(start), std::ref(snake));
+    // Input, Render
     controller.HandleInputStart(start);
-    // snakeThread.join();
-    // Update();
     renderer.RenderStart();
 
     frame_end = SDL_GetTicks();
@@ -83,22 +93,12 @@ bool Game::GameStart(Controller const &controller, Renderer &renderer,
     frame_count++;
     frame_duration = frame_end - frame_start;
 
-    // After every second, update the window title.
-    if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count, repeat);
-      frame_count = 0;
-      title_timestamp = frame_end;
-    }
-
     // If the time for this frame is too small (i.e. frame_duration is
     // smaller than the target ms_per_frame), delay the loop to
     // achieve the correct frame rate.
     if (frame_duration < target_frame_duration) {
       SDL_Delay(target_frame_duration - frame_duration);
     }
-
-    // std::cout << "Score: " << GetScore()<<"| Size: "<<GetSize()<<"\t\r"<<std::flush;
-    // std::cout << "Size: " << GetSize() <<"\t\r"<<std::flush;
   }
 
   if (start == 1)
@@ -111,6 +111,40 @@ bool Game::GameStart(Controller const &controller, Renderer &renderer,
     }    
 
   return false;
+}
+
+
+void Game::GameEnd(Controller const &controller, Renderer &renderer, 
+                      std::size_t target_frame_duration) {
+  Uint32 title_timestamp = SDL_GetTicks();
+  Uint32 frame_start;
+  Uint32 frame_end;
+  Uint32 frame_duration;
+  int frame_count = 0;
+  int start = 0;
+
+  while (start == 0) {
+    frame_start = SDL_GetTicks();
+
+    // Input, Render
+    controller.HandleInputStart(start);
+    int score = HighScore();
+    renderer.RenderEnd(score);
+
+    frame_end = SDL_GetTicks();
+
+    // Keep track of how long each loop through the input/update/render cycle
+    // takes.
+    frame_count++;
+    frame_duration = frame_end - frame_start;
+
+    // If the time for this frame is too small (i.e. frame_duration is
+    // smaller than the target ms_per_frame), delay the loop to
+    // achieve the correct frame rate.
+    if (frame_duration < target_frame_duration) {
+      SDL_Delay(target_frame_duration - frame_duration);
+    }
+  }
 }
 
 /*
@@ -188,7 +222,7 @@ void Game::Update() {
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
 
-int Game::HighScore(Game& obj) {
+int Game::HighScore() {
   int high = 0;
   for (int i:scoreboard)
   {
