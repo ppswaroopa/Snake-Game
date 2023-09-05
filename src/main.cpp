@@ -24,6 +24,7 @@ int main() {
     game.Run(controller, renderer, kMsPerFrame);
     std::cout << "Game has terminated successfully!\n";
     std::cout << "Highest Score: " << game.HighScore() <<"\n";
+    game.GameEnd(controller, renderer, kMsPerFrame);
   }
 
   game.GameEnd(controller, renderer, kMsPerFrame);

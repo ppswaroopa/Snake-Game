@@ -183,6 +183,7 @@ void Renderer::RenderEnd(int score) {
   SDL_Color textColor = {255, 255, 255}; // White color
   SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "Game Over", textColor);
   SDL_Surface* quitTextSurface = TTF_RenderText_Solid(font, score_string.c_str(), textColor);
+  SDL_Surface* restartTextSurface = TTF_RenderText_Solid(font, "Restart? Press SPACE", textColor);
   if ( !startTextSurface or ! quitTextSurface) {
 	  std::cout << "Failed to render text: " << TTF_GetError() << "\n";
   }
@@ -190,6 +191,7 @@ void Renderer::RenderEnd(int score) {
   // Create an SDL_Texture from the surface
   SDL_Texture* startTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, startTextSurface);
   SDL_Texture* quitTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, quitTextSurface);
+  SDL_Texture* restartTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, restartTextSurface);
 
   // get dimensions of the StartText
   int StextWidth = startTextSurface->w;
@@ -199,23 +201,34 @@ void Renderer::RenderEnd(int score) {
   int QtextWidth = quitTextSurface->w;
   int QtextHeight = quitTextSurface->h;
 
+  // get dimensions of the StartText
+  int RtextWidth = restartTextSurface->w;
+  int RtextHeight = restartTextSurface->h;
+
   // For positioning at the center
   SDL_Rect StextRect;
   StextRect.x = screen_width / 2 - StextWidth / 2;
-  StextRect.y = screen_height / 2 - (StextHeight + QtextHeight) / 2;
+  StextRect.y = screen_height / 2 - (StextHeight + QtextHeight + QtextHeight) / 2;
 
   SDL_Rect quitTextRect;
   quitTextRect.x = screen_width / 2 - QtextWidth / 2;
-  quitTextRect.y = screen_height / 2 - (StextHeight + QtextHeight) / 2 + 30;
+  quitTextRect.y = screen_height / 2 - (StextHeight + QtextHeight + QtextHeight) / 2 + 30;
+
+  SDL_Rect restartTextRect;
+  restartTextRect.x = screen_width / 2 - RtextWidth / 2;
+  restartTextRect.y = screen_height / 2 - (StextHeight + QtextHeight + QtextHeight) / 2 + 70;
 
   // Set the width and height of the destination rectangle
   StextRect.w = StextWidth; // Use the width of the text surface
   StextRect.h = StextHeight; // Use the height of the text surface
   quitTextRect.w = QtextWidth;
   quitTextRect.h = QtextHeight;
+  restartTextRect.w = RtextWidth;
+  restartTextRect.h = RtextHeight;
 
   SDL_RenderCopy( sdl_renderer, startTextTexture , NULL, &StextRect);
   SDL_RenderCopy( sdl_renderer, quitTextTexture , NULL, &quitTextRect);
+  SDL_RenderCopy( sdl_renderer, restartTextTexture , NULL, &restartTextRect);
 
   // Cleanup the surface and font
   SDL_FreeSurface(startTextSurface);
