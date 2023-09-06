@@ -1,6 +1,6 @@
 # Snake Game
 
-This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This is my submisson for Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213).
 
 <img src="snake_game.gif"/>
 
@@ -14,11 +14,15 @@ This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www
 * SDL2 >= 2.0
   * All installation instructions can be found [here](https://wiki.libsdl.org/Installation)
   >Note that for Linux, an `apt` or `apt-get` installation is preferred to building from source. 
+* True-Type-Fonts require TTF header files in additional to the SDL library.
+```bash
+  sudo apt-get install libsdl2-ttf-dev
+```
 * gcc/g++ >= 5.4
   * Linux: gcc / g++ is installed by default on most Linux distros
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
-* sudo apt-get install libsdl2-ttf-dev
+
 
 ## Basic Build Instructions
 
@@ -27,58 +31,49 @@ This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
 
+>Note: CMake throws the following errors, you may ignore :
+```bash
+-- Could NOT find SDL2TTF (missing: SDL2TTF_INCLUDE_DIRS) 
+-- Could NOT find SDL2MIXER (missing: SDL2MIXER_INCLUDE_DIRS) 
+```
 
 ## Scope & Implementations
 
-I set out to add more features and make the game interesting.
+Original fork implements the basic game and challenges you to understand and develop further features. For my flavour of the Snake Game, I selected some features that added more intuitiveness and made it a whole game.
 1. Add <b>Boosts & Penalties</b> to add dynamism.
-2. Play game for longer.
+2. Play game for longer/continue playing without exiting.
 3. Add Time based challenges.
 4. Add game music.
 5. Make all game features accessible inside the window.
 
-I have successfully implemented the 1st& 2nd feature. Rest of the features will be implemented later.
+I have successfully implemented everything except the 3rd feature which later came to realize wasn't that fun to implement.
 
 ### Boosts and Penalties
-In the game Green blocks are food, they grow the length of the snake and also increase speed of movement. Brown block is the Morgue, which when passed over will kill the snake and the game will end. Yellow blocks give a chance to decrease speed slightly and reduce length while still maintaining the score. As the snake keeps eating the food the speed will be difficult to manage so the player can use this as a way to keep them in the game.
+In the game Green blocks are food, they grow the length of the snake and also increase speed of movement. Brown block is the Morgue, which when met will kill the snake and the game will end. Yellow blocks give a chance to decrease the speed of snake by a little and reduce length of the snake while still keeping the score. As the snake keeps eating the food the speed will be difficult to manage so the player can use this as a way to keep them in the game. Speed reduction is set at 1/10th right now.
 
-### Play game for longer
-Game can now be played for as long as the player wants to and the highest score will be displayed at the end. Player can press 'ESC' key or close the application to quit.
+### Play game for longer/continue playing without exiting.
+I have implemented a Start and End screen that way player can choose to continue to play or exit. End screen displays the score and pressing `ENTER` key allows player to play again. At any point in the game if player presses '`ESC` key quits the game.
 
+### Game music
+When playing the game song "Bit of Hope" is played in the background. Implemented using the SDL_Mixer. 
+
+### Make all game features accessible inside the window
+Developed a Start and End Game screen. Using SDL_TTF imported True-Type-Fonts and displays the game name and presents control options to the player.
 
 ### Expected Behavior
-The game starts and spawns the Snake(Blue), a Food block(Green), a Lemon(Shrinking Food - Yellow) & a Morgue(Kills - Brown). Player can use the keyboard arrow keys to change the direction of the snake travel.
+On game launch Press `ENTER` key to play, `ESC` key to quit.
+The game starts and spawns the Snake Head(Blue), a Food block(Green), a Lemon(Shrinking Food - Yellow) & a Morgue(Kills - Brown). Player to use the keyboard arrow keys to change the direction of the snake travel.
 * Eating Green colored block scores a point and increases the length and speed of the snake.
 * Eating Yellow colored block scores no points and decreases the length of the snake.
 * Eating Brown colored block kills the snake and ends the game.
 
-### Rubric Points Addressed
+If the snake goes to the Brown block/Morgue snake dies, or if you circle back the snake head to snake body snake will die.
 
-1. Loops, Function, I/O
+On the Game End screen player score is displayed and can press `ENTER` key to play again or press `ESC` key to quit the game.
 
-    Project uses Game Design Pattern and involves the Input-Update-Render loop that runs as the core Game loop. Using SDL Library Poll Event function keypresses from the player are used to change the direction of the snake movement.
-
-    HighScore is a function from Game class that displays the highest score after the game ends.
-
-    ShrinkBody is a function from Snake class that reduces the length of the snake body when the snake eats the Lemon.
-
-    ResetSnake is a function from Snake class that resets the game. 
-
-2. Object Oriented Programming
-
-    Project is organized to use classes and the class objects are used to dynamically change game play. Ex: ShrinkBody function which is called when the snake eats the lemon (yellow blocks) it sets the class private variable "shrinking" to true which is used by the UpdateBody function of the Snake class.
-
-    HighScore uses the ScoreBoard vector that is private to the Game class to return the highest score out of all the tries from the player. Scoreboard variable is abstracted from other uses and only functions defined in the class like HighScore are able to use the data.
-
-    ResetSnake function modifies values of the private variable back to their original values acting as a safe access to the variables. 
-
-3. Memory Management
-
-    To prevent unncesary copying of class objects, on HighScore, ResetSnake object is passed by reference to the functions.
-
-4. Concurrency
-
-    HandleInput function is executed on a seperate thread. User inputs are now handled by a seperate thread.
+<img src="resource/start_game.png" width=350px/>
+<img src="resource/in_game.png" width=350px/>
+<img src="resource/end_game.png" width=350px/>
 
 
 ## CC Attribution-ShareAlike 4.0 International
@@ -95,6 +90,6 @@ This work is licensed under a
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
 
-Game Music "A bit of Hope" is used from : https://www.fesliyanstudios.com/
+"A bit of Hope" is Royalty Free Music from : https://www.fesliyanstudios.com/
 
-Fonts from fontspace.com for 'ttf' fonts.
+Game fonts are form https://www.fontspace.com. 'Debrosee-ALPnL' for Game Title, and 'SummerPixel' for game menu.
