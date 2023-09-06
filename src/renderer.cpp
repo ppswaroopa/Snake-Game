@@ -39,7 +39,6 @@ Renderer::Renderer(const std::size_t screen_width,
 
 Renderer::~Renderer() {
   SDL_DestroyWindow(sdl_window);
-  
   Mix_Quit(); // Destroy Music Object
   SDL_Quit(); // Destroy SDL Obkect
 }
@@ -93,8 +92,8 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, SDL_Point const 
   SDL_RenderPresent(sdl_renderer);
 }
 
-void Renderer::UpdateWindowTitle(int score, int fps, int repeat) {
-  std::string title{"Game: " + std::to_string(repeat) + " Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+void Renderer::UpdateWindowTitle(int score, int fps) {
+  std::string title{"Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
 
@@ -109,14 +108,14 @@ void Renderer::RenderStart() {
     std::cout<<"Error Initializing SDL_ttf: "<< TTF_GetError() <<"\n";
   }
 
-  TTF_Font* font = TTF_OpenFont("/home/pranava/udacity_cpp/Snake-Game/src/fonts/SummerPixel.ttf",32);
+  TTF_Font* font = TTF_OpenFont("fonts/SummerPixel.ttf",32);
   if (!font) {
     std::cout<<"Failed to load font: "<< TTF_GetError() <<"\n";
   }
   
   // Create an SDL_Surface with the text
   SDL_Color textColor = {255, 255, 255}; // White color
-  SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "Press SPACE to START", textColor);
+  SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "Press ENTER to START", textColor);
   SDL_Surface* quitTextSurface = TTF_RenderText_Solid(font, "Press ESC to Quit", textColor);
   if ( !startTextSurface or ! quitTextSurface) {
 	  std::cout << "Failed to render text: " << TTF_GetError() << "\n";
@@ -171,7 +170,7 @@ void Renderer::RenderEnd(int score) {
     std::cout<<"Error Initializing SDL_ttf: "<< TTF_GetError() <<"\n";
   }
 
-  TTF_Font* font = TTF_OpenFont("/home/pranava/udacity_cpp/Snake-Game/src/fonts/SummerPixel.ttf",32);
+  TTF_Font* font = TTF_OpenFont("fonts/SummerPixel.ttf",32);
   if (!font) {
     std::cout<<"Failed to load font: "<< TTF_GetError() <<"\n";
   }
@@ -181,7 +180,7 @@ void Renderer::RenderEnd(int score) {
   SDL_Color textColor = {255, 255, 255}; // White color
   SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "Game Over", textColor);
   SDL_Surface* quitTextSurface = TTF_RenderText_Solid(font, score_string.c_str(), textColor);
-  SDL_Surface* restartTextSurface = TTF_RenderText_Solid(font, "Restart? Press SPACE", textColor);
+  SDL_Surface* restartTextSurface = TTF_RenderText_Solid(font, "Restart? Press ENTER", textColor);
   if ( !startTextSurface or ! quitTextSurface) {
 	  std::cout << "Failed to render text: " << TTF_GetError() << "\n";
   }

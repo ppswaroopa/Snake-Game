@@ -1,7 +1,4 @@
 #include "controller.h"
-#include <iostream>
-#include "SDL.h"
-#include "snake.h"
 
 void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
                                  Snake::Direction opposite) const {
@@ -44,14 +41,24 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
   }
 }
 
-void Controller::HandleInputStart(int &start) const {
+/*
+Handles keyboard input for the Start and End screen.
+Input: Enter key OR Enter key from the keypad sets variable start to 1
+This allows the player to play the game.
+Input: Pressing the quit window button or Escape key, sets variable to 2
+This quits the game.
+*/
+void Controller::HandleInputStartEnd(int &start) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) {
       start = 2;
     } else if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
-        case SDLK_SPACE:
+        case SDLK_RETURN:
+          start = 1;
+          break;
+        case SDLK_KP_ENTER:
           start = 1;
           break;
         case SDLK_ESCAPE:

@@ -23,7 +23,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
   Mix_Music* music; // Initialize music and play music
   
-  music = Mix_LoadMUS("/home/pranava/udacity_cpp/Snake-Game/src/music/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3");
+  music = Mix_LoadMUS("music/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3");
 
   if (!music) {
     std::cerr << "Failed to load music.\n";
@@ -38,9 +38,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    // std::thread snakeThread(&Controller::HandleInput, controller, std::ref(running), std::ref(snake));
     controller.HandleInput(running, snake);
-    // snakeThread.join();
     Update(running);
     renderer.Render(snake, food, lemon, morgue);
 
@@ -53,7 +51,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count, repeat);
+      renderer.UpdateWindowTitle(score, frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -64,8 +62,6 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     if (frame_duration < target_frame_duration) {
       SDL_Delay(target_frame_duration - frame_duration);
     }
-
-      // std::cout << "Score: " << GetScore()<<"| Size: "<<GetSize()<<"\t\r"<<std::flush;
   }
 }
 
@@ -82,7 +78,7 @@ bool Game::GameStart(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Render
-    controller.HandleInputStart(start);
+    controller.HandleInputStartEnd(start);
     renderer.RenderStart();
 
     frame_end = SDL_GetTicks();
@@ -100,14 +96,9 @@ bool Game::GameStart(Controller const &controller, Renderer &renderer,
     }
   }
 
-  if (start == 1)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }    
+  if (start == 1) { return true; }
+  else 
+    return false;   
 
   return false;
 }
@@ -126,7 +117,7 @@ bool Game::GameEnd(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Render
-    controller.HandleInputStart(start);
+    controller.HandleInputStartEnd(start);
     int score = GetScore();
     renderer.RenderEnd(score);
 
@@ -195,7 +186,9 @@ void Game::Update(bool &running) {
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
 
-  // Check if there's food over here
+  // Check what's at the current location and update score, speed and grow/shrink the snake
+
+  // If food->grow snake.
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
@@ -203,48 +196,24 @@ void Game::Update(bool &running) {
     snake.GrowBody();
     snake.speed += 0.01;
   }
-  // Check if there's lemon->shrinks
+  // If lemon->shrink snake.
   else if (lemon.x == new_x && lemon.y == new_y) {
     PlaceFood();
     // Shrink snake and decrease speed.
     snake.ShrinkBody();
     snake.speed -= 0.001;
   }
-  // Check if there's morgue->kills.
+  // Check if there's morgue->kill snake.
   else if (morgue.x == new_x && morgue.y == new_y) {
     snake.alive = false;
-    // running = false; // End game
-    // // score = 0;
-    // snake.ResetSnake();
-    // PlaceFood();
-    // return;
   }
-  // Check if snake is dead
-  if (!snake.alive)
-  {
-    running = false; // End game
-    // score = 0;
-    // snake.ResetSnake();
-    // PlaceFood();
-  }
-  
-  
 }
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
 
-int Game::HighScore() {
-  // int high = 0;
-  // for (int i:scoreboard)
-  // {
-  //   if (high > i)
-  //   {
-  //     continue;
-  //   }
-  //   else {
-  //     high = i;
-  //   }
-  // }
-  return score;
-}
+void Game::ResetGame(){
+    snake.ResetSnake();
+    score = 0;
+    PlaceFood();
+  }

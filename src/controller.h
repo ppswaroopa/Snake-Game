@@ -2,11 +2,12 @@
 #define CONTROLLER_H
 
 #include "snake.h"
+#include "SDL.h"
 
 class Controller {
  public:
   void HandleInput(bool &running, Snake &snake) const;
-  void HandleInputStart(int &running) const;
+  void HandleInputStartEnd(int &running) const;
 
  private:
   void ChangeDirection(Snake &snake, Snake::Direction input,
