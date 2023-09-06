@@ -18,8 +18,12 @@ class Game {
   int HighScore();
   bool GameStart(Controller const &controller, Renderer &renderer, 
             std::size_t target_frame_duration);
-  void GameEnd(Controller const &controller, Renderer &renderer,
+  bool GameEnd(Controller const &controller, Renderer &renderer,
             std::size_t target_frame_duration);
+  void ResetGame(){
+    snake.ResetSnake();
+    score = 0;
+  }
 
  private:
   Snake snake;
@@ -37,7 +41,7 @@ class Game {
   std::vector<int> scoreboard;
 
   void PlaceFood();
-  void Update();
+  void Update(bool &running);
 };
 
 #endif

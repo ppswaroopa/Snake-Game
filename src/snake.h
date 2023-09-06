@@ -19,7 +19,7 @@ class Snake {
   void GrowBody();
   void ShrinkBody();
   bool SnakeCell(int x, int y);
-  void ResetSnake(Snake&);
+  void ResetSnake();
 
   Direction direction = Direction::kUp;
 

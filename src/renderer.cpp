@@ -39,11 +39,9 @@ Renderer::Renderer(const std::size_t screen_width,
 
 Renderer::~Renderer() {
   SDL_DestroyWindow(sdl_window);
-  SDL_Quit();
-  // Mix_FreeMusic( music );
-
-  Mix_Quit();
-  SDL_Quit();
+  
+  Mix_Quit(); // Destroy Music Object
+  SDL_Quit(); // Destroy SDL Obkect
 }
 
 void Renderer::Render(Snake const snake, SDL_Point const &food, SDL_Point const &lemon, SDL_Point const &morgue) {

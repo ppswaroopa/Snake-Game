@@ -106,10 +106,11 @@ bool Snake::SnakeCell(int x, int y) {
   return false;
 }
 
-void Snake::ResetSnake(Snake& obj){
+void Snake::ResetSnake(){
   alive = true;
   head_x = grid_height/2;
   head_y = grid_width/2;
+  speed = {0.1f};
   while (size > 1){
     body.erase(body.begin());
     size -= 1;

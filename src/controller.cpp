@@ -13,7 +13,7 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) {
-      running = false;
+      snake.alive = false;
     } else if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
         case SDLK_UP:
@@ -37,7 +37,7 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
           break;
         case SDLK_ESCAPE:
           snake.alive = false;
-          running = false;
+          // running = false;
           break;
       }
     }

@@ -19,14 +19,15 @@ int main() {
   // Start the game
   play = game.GameStart(controller, renderer, kMsPerFrame);
 
-  if (play) {
+  while (play) {
     // Run game if selection is to play
     game.Run(controller, renderer, kMsPerFrame);
-    std::cout << "Game has terminated successfully!\n";
-    std::cout << "Highest Score: " << game.HighScore() <<"\n";
-    game.GameEnd(controller, renderer, kMsPerFrame);
+    // std::cout << "Game has terminated successfully!\n";
+    // std::cout << "Highest Score: " << game.HighScore() <<"\n";
+    play = game.GameEnd(controller, renderer, kMsPerFrame);
+    game.ResetGame();
   }
 
-  game.GameEnd(controller, renderer, kMsPerFrame);
+  // game.GameEnd(controller, renderer, kMsPerFrame);
   return 0;
 }

@@ -33,15 +33,15 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   if ( result != 0 ) {
     std::cerr << "Failed to play music: " << Mix_GetError() << "\n";
   }
-
-  while (running) {
+  
+  while (snake.alive) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    std::thread snakeThread(&Controller::HandleInput, controller, std::ref(running), std::ref(snake));
-    // controller.HandleInput(running, snake);
-    snakeThread.join();
-    Update();
+    // std::thread snakeThread(&Controller::HandleInput, controller, std::ref(running), std::ref(snake));
+    controller.HandleInput(running, snake);
+    // snakeThread.join();
+    Update(running);
     renderer.Render(snake, food, lemon, morgue);
 
     frame_end = SDL_GetTicks();
@@ -65,8 +65,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
 
-    std::cout << "Score: " << GetScore()<<"| Size: "<<GetSize()<<"\t\r"<<std::flush;
-    // std::cout << "Size: " << GetSize() <<"\t\r"<<std::flush;
+      // std::cout << "Score: " << GetScore()<<"| Size: "<<GetSize()<<"\t\r"<<std::flush;
   }
 }
 
@@ -114,7 +113,7 @@ bool Game::GameStart(Controller const &controller, Renderer &renderer,
 }
 
 
-void Game::GameEnd(Controller const &controller, Renderer &renderer, 
+bool Game::GameEnd(Controller const &controller, Renderer &renderer, 
                       std::size_t target_frame_duration) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
@@ -128,7 +127,7 @@ void Game::GameEnd(Controller const &controller, Renderer &renderer,
 
     // Input, Render
     controller.HandleInputStart(start);
-    int score = HighScore();
+    int score = GetScore();
     renderer.RenderEnd(score);
 
     frame_end = SDL_GetTicks();
@@ -145,6 +144,12 @@ void Game::GameEnd(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+
+  if (start == 1) { return true; }
+  else 
+    return false;
+
+  return false;
 }
 
 /*
@@ -182,8 +187,8 @@ void Game::PlaceFood() {
   }
 }
 
-void Game::Update() {
-  if (!snake.alive && (repeat > 3)) return;
+void Game::Update(bool &running) {
+  if (!snake.alive) return;
 
   snake.Update();
 
@@ -196,26 +201,33 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.005; // Lowered speed to allow higher scores.
+    snake.speed += 0.01;
   }
-
-  if (lemon.x == new_x && lemon.y == new_y) {
+  // Check if there's lemon->shrinks
+  else if (lemon.x == new_x && lemon.y == new_y) {
     PlaceFood();
     // Shrink snake and decrease speed.
     snake.ShrinkBody();
-    snake.speed -= 0.0002;
+    snake.speed -= 0.001;
   }
-
-  if (morgue.x == new_x && morgue.y == new_y) {
+  // Check if there's morgue->kills.
+  else if (morgue.x == new_x && morgue.y == new_y) {
     snake.alive = false;
-    repeat++;
-    // Game runs indefinetly until user quits.
-    scoreboard.push_back(score);
-    score = 0;
-    snake.ResetSnake(snake);
-    PlaceFood();
-    return;
+    // running = false; // End game
+    // // score = 0;
+    // snake.ResetSnake();
+    // PlaceFood();
+    // return;
   }
+  // Check if snake is dead
+  if (!snake.alive)
+  {
+    running = false; // End game
+    // score = 0;
+    // snake.ResetSnake();
+    // PlaceFood();
+  }
+  
   
 }
 
@@ -223,16 +235,16 @@ int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
 
 int Game::HighScore() {
-  int high = 0;
-  for (int i:scoreboard)
-  {
-    if (high > i)
-    {
-      continue;
-    }
-    else {
-      high = i;
-    }
-  }
-  return high;
+  // int high = 0;
+  // for (int i:scoreboard)
+  // {
+  //   if (high > i)
+  //   {
+  //     continue;
+  //   }
+  //   else {
+  //     high = i;
+  //   }
+  // }
+  return score;
 }
