@@ -43,7 +43,8 @@ Renderer::~Renderer() {
   SDL_Quit(); // Destroy SDL Obkect
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food, SDL_Point const &lemon, SDL_Point const &morgue) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, 
+                      SDL_Point const &lemon, SDL_Point const &morgue) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -105,25 +106,39 @@ void Renderer::RenderStart() {
   // Initialize TTF
   TTF_Init();
   if (TTF_Init() < 0) {
-    std::cout<<"Error Initializing SDL_ttf: "<< TTF_GetError() <<"\n";
+    std::cerr<<"Error Initializing SDL_ttf: "<< TTF_GetError() <<"\n";
   }
 
-  TTF_Font* font = TTF_OpenFont("fonts/SummerPixel.ttf",32);
+  std::string basePath = SDL_GetBasePath();
+  std::string fontPath = basePath + "fonts/SummerPixel.ttf";
+
+  TTF_Font* font = TTF_OpenFont((basePath + "fonts/SummerPixel.ttf").c_str(),32);
   if (!font) {
-    std::cout<<"Failed to load font: "<< TTF_GetError() <<"\n";
+    std::cerr<<"Failed to load font: "<< TTF_GetError() <<"\n";
+  }
+
+  TTF_Font* game_font = TTF_OpenFont((basePath + "fonts/Debrosee-ALPnL.ttf").c_str(),56);
+  if (!game_font) {
+    std::cerr<<"Failed to load font: "<< TTF_GetError() <<"\n";
   }
   
   // Create an SDL_Surface with the text
   SDL_Color textColor = {255, 255, 255}; // White color
+  SDL_Surface* gameTitle = TTF_RenderText_Solid(game_font, "Snake", textColor);
   SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "Press ENTER to START", textColor);
   SDL_Surface* quitTextSurface = TTF_RenderText_Solid(font, "Press ESC to Quit", textColor);
   if ( !startTextSurface or ! quitTextSurface) {
-	  std::cout << "Failed to render text: " << TTF_GetError() << "\n";
+	  std::cerr << "Failed to render text: " << TTF_GetError() << "\n";
   }
 
   // Create an SDL_Texture from the surface
   SDL_Texture* startTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, startTextSurface);
   SDL_Texture* quitTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, quitTextSurface);
+  SDL_Texture* gameTitleTextTexture = SDL_CreateTextureFromSurface(sdl_renderer, gameTitle);
+
+  // get dimensions of the Game Title
+  int GametextWidth = gameTitle->w;
+  int GametextHeight = gameTitle->h;
 
   // get dimensions of the StartText
   int StextWidth = startTextSurface->w;
@@ -134,20 +149,28 @@ void Renderer::RenderStart() {
   int QtextHeight = quitTextSurface->h;
 
   // For positioning at the center
+  SDL_Rect GametextRect;
+  GametextRect.x = screen_width / 2 - GametextWidth / 2;
+  GametextRect.y = screen_height / 4;
+  
+  // For positioning at the center
   SDL_Rect StextRect;
   StextRect.x = screen_width / 2 - StextWidth / 2;
-  StextRect.y = screen_height / 2 - (StextHeight + QtextHeight) / 2;
+  StextRect.y = screen_height / 2 - (GametextHeight + StextHeight + QtextHeight) / 2;
 
   SDL_Rect quitTextRect;
   quitTextRect.x = screen_width / 2 - QtextWidth / 2;
-  quitTextRect.y = screen_height / 2 - (StextHeight + QtextHeight) / 2 + 30;
+  quitTextRect.y = screen_height / 2 - (GametextHeight + StextHeight + QtextHeight) / 2 + 30;
 
   // Set the width and height of the destination rectangle
+  GametextRect.w = GametextWidth;
+  GametextRect.h = GametextHeight;
   StextRect.w = StextWidth; // Use the width of the text surface
   StextRect.h = StextHeight; // Use the height of the text surface
   quitTextRect.w = QtextWidth;
   quitTextRect.h = QtextHeight;
 
+  SDL_RenderCopy( sdl_renderer, gameTitleTextTexture, NULL, &GametextRect);
   SDL_RenderCopy( sdl_renderer, startTextTexture , NULL, &StextRect);
   SDL_RenderCopy( sdl_renderer, quitTextTexture , NULL, &quitTextRect);
 
@@ -170,7 +193,8 @@ void Renderer::RenderEnd(int score) {
     std::cout<<"Error Initializing SDL_ttf: "<< TTF_GetError() <<"\n";
   }
 
-  TTF_Font* font = TTF_OpenFont("fonts/SummerPixel.ttf",32);
+  std::string basePath = SDL_GetBasePath();
+  TTF_Font* font = TTF_OpenFont((basePath + "fonts/SummerPixel.ttf").c_str(),32);
   if (!font) {
     std::cout<<"Failed to load font: "<< TTF_GetError() <<"\n";
   }

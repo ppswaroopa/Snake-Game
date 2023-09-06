@@ -23,7 +23,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
   Mix_Music* music; // Initialize music and play music
   
-  music = Mix_LoadMUS("music/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3");
+  std::string basePath = SDL_GetBasePath();
+  music = Mix_LoadMUS((basePath + "music/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3").c_str());
 
   if (!music) {
     std::cerr << "Failed to load music.\n";

@@ -96,3 +96,5 @@ This work is licensed under a
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
 
 Game Music "A bit of Hope" is used from : https://www.fesliyanstudios.com/
+
+Fonts from fontspace.com for 'ttf' fonts.
