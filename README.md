@@ -71,10 +71,11 @@ If the snake goes to the Brown block/Morgue snake dies, or if you circle back th
 
 On the Game End screen player score is displayed and can press `ENTER` key to play again or press `ESC` key to quit the game.
 
-<img src="resource/start_game.png" width=200px/>
-<img src="resource/in_game.png" width=200px/>
-<img src="resource/end_game.png" width=200px/>
-
+<p>
+<img src="resource/start_game.png" width=250px/>
+<img src="resource/in_game.png" width=250px/>
+<img src="resource/end_game.png" width=250px/>
+</p>
 
 ## CC Attribution-ShareAlike 4.0 International
 
